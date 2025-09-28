@@ -1,14 +1,11 @@
 "use client";
 
 import {
-  EuiPage,
-  EuiPageBody,
-  EuiPageHeader,
   EuiButton,
   EuiCard,
   EuiFlexGrid,
+  EuiPageHeader,
   EuiPageSection,
-  EuiText,
 } from "@elastic/eui";
 
 export default function Home() {

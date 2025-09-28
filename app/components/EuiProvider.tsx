@@ -1,8 +1,13 @@
-'use client';
+"use client";
 
-import { EuiProvider, EuiThemeProvider } from "@elastic/eui";
+import {
+  EuiPage,
+  EuiPageBody,
+  EuiProvider,
+  EuiThemeProvider,
+} from "@elastic/eui";
 import createCache from "@emotion/cache";
-import { useServerInsertedHTML } from 'next/navigation';
+import { useServerInsertedHTML } from "next/navigation";
 
 export function EuiProviderWrapper({
   children,
@@ -10,15 +15,15 @@ export function EuiProviderWrapper({
   children: React.ReactNode;
 }) {
   const cache = createCache({
-    key: 'eui',
-    container: undefined
+    key: "eui",
+    container: undefined,
   });
 
   useServerInsertedHTML(() => (
     <style
       data-emotion={`css ${cache.key}`}
       dangerouslySetInnerHTML={{
-        __html: Object.values(cache.inserted).join(' ')
+        __html: Object.values(cache.inserted).join(" "),
       }}
     />
   ));
@@ -26,7 +31,9 @@ export function EuiProviderWrapper({
   return (
     <EuiProvider cache={cache}>
       <EuiThemeProvider colorMode="dark">
-        {children}
+        <EuiPage paddingSize="l" style={{ height: "100vh" }}>
+          <EuiPageBody>{children}</EuiPageBody>
+        </EuiPage>
       </EuiThemeProvider>
     </EuiProvider>
   );

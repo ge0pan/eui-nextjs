@@ -1,32 +1,36 @@
-'use client';
+"use client";
 
 import {
   EuiPage,
   EuiPageBody,
   EuiPageHeader,
-  EuiText,
-  EuiSpacer,
   EuiButton,
   EuiCard,
-  EuiFlexGrid
-} from '@elastic/eui';
+  EuiFlexGrid,
+  EuiPageSection,
+  EuiText,
+} from "@elastic/eui";
 
 export default function Home() {
   return (
-    <EuiPage paddingSize="l">
-      <EuiPageBody>
-        <EuiPageHeader
-          pageTitle="Welcome to Next.js with EUI"
-          description="This is a sample page using Elastic UI components"
-        />
-        <EuiSpacer size="l" />
-        
+    <>
+      <EuiPageHeader
+        pageTitle="Welcome to Next.js with EUI"
+        description="This is a sample page using Elastic UI components"
+        paddingSize="l"
+      />
+
+      <EuiPageSection paddingSize="l" grow>
         <EuiFlexGrid columns={2} gutterSize="l">
           <EuiCard
             title="Getting Started"
             description="Learn how to use EUI components in your Next.js application."
             footer={
-              <EuiButton fill href="https://elastic.github.io/eui/" target="_blank">
+              <EuiButton
+                fill
+                href="https://elastic.github.io/eui/"
+                target="_blank"
+              >
                 View EUI Docs
               </EuiButton>
             }
@@ -41,7 +45,7 @@ export default function Home() {
             }
           />
         </EuiFlexGrid>
-      </EuiPageBody>
-    </EuiPage>
+      </EuiPageSection>
+    </>
   );
 }

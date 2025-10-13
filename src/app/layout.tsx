@@ -1,4 +1,4 @@
-import { EuiProviderWrapper } from "./components/EuiProvider";
+import { EuiProviderWrapper } from "../components/EuiProvider";
 import LayoutClient from "./layout.client";
 
 export default function RootLayout({

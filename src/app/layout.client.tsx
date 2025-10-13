@@ -1,7 +1,8 @@
 "use client";
 
-import { useGetLinkProps } from "@/hooks/useGetLinkProps";
 import { EuiPageTemplate, EuiSideNav } from "@elastic/eui";
+
+import { useGetLinkProps } from "@/hooks/useGetLinkProps";
 
 export default function LayoutClient({
   children,

@@ -1,8 +1,9 @@
 "use client";
 
+import { useServerInsertedHTML } from "next/navigation";
+
 import { EuiProvider, EuiThemeProvider } from "@elastic/eui";
 import createCache from "@emotion/cache";
-import { useServerInsertedHTML } from "next/navigation";
 
 export function EuiProviderWrapper({
   children,

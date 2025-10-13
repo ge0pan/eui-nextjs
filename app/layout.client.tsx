@@ -1,12 +1,33 @@
 "use client";
 
 import { EuiPageTemplate, EuiSideNav } from "@elastic/eui";
+import { useRouter } from "next/navigation";
+
+function useGetLinkProps() {
+  const router = useRouter();
+
+  return (href: string) => ({
+    href,
+    onClick: (e: React.MouseEvent) => {
+      if (e.metaKey || e.ctrlKey) {
+        // Default behavior for opening in a new tab
+        return;
+      }
+
+      e.preventDefault();
+
+      router.push(href);
+    },
+  });
+}
 
 export default function LayoutClient({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const getLinkProps = useGetLinkProps();
+
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       <EuiPageTemplate
@@ -24,12 +45,12 @@ export default function LayoutClient({
                   {
                     name: "Drafts",
                     id: "email-draft",
-                    href: "/email/drafts",
+                    ...getLinkProps("/email/drafts"),
                   },
                   {
                     name: "Review",
                     id: "email-review",
-                    href: "/email/review",
+                    ...getLinkProps("/email/review"),
                   },
                 ],
               },
@@ -40,7 +61,7 @@ export default function LayoutClient({
                   {
                     name: "Create",
                     id: "campaign-create",
-                    href: "/campaign/create",
+                    ...getLinkProps("/campaign/create"),
                   },
                 ],
               },

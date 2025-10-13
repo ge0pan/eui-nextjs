@@ -9,6 +9,6 @@ export type Campaign = {
   area: string;
   language: string;
   owner: User;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

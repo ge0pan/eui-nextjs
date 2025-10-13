@@ -1,19 +1,18 @@
 "use client";
 
-import { EuiPageHeader, EuiPageSection, EuiText } from "@elastic/eui";
+import { EuiPageTemplate, EuiText } from "@elastic/eui";
 
 export default function PageClient() {
   return (
     <>
-      <EuiPageHeader
+      <EuiPageTemplate.Header
         pageTitle="Campaign Create"
         description="Create a new campaign"
-        paddingSize="l"
       />
 
-      <EuiPageSection paddingSize="l" grow>
+      <EuiPageTemplate.Section>
         <EuiText>123</EuiText>
-      </EuiPageSection>
+      </EuiPageTemplate.Section>
     </>
   );
 }

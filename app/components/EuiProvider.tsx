@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  EuiPage,
-  EuiPageBody,
-  EuiProvider,
-  EuiThemeProvider,
-} from "@elastic/eui";
+import { EuiProvider, EuiThemeProvider } from "@elastic/eui";
 import createCache from "@emotion/cache";
 import { useServerInsertedHTML } from "next/navigation";
 
@@ -30,11 +25,7 @@ export function EuiProviderWrapper({
 
   return (
     <EuiProvider cache={cache}>
-      <EuiThemeProvider colorMode="light">
-        <EuiPage paddingSize="l" style={{ height: "100vh" }}>
-          <EuiPageBody>{children}</EuiPageBody>
-        </EuiPage>
-      </EuiThemeProvider>
+      <EuiThemeProvider colorMode="light">{children}</EuiThemeProvider>
     </EuiProvider>
   );
 }

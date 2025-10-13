@@ -1,19 +1,18 @@
 "use client";
 
-import { EuiPageHeader, EuiPageSection, EuiText } from "@elastic/eui";
+import { EuiPageTemplate, EuiText } from "@elastic/eui";
 
 export default function PageClient() {
   return (
     <>
-      <EuiPageHeader
+      <EuiPageTemplate.Header
         pageTitle="Email Drafts"
         description="View your email drafts"
-        paddingSize="l"
       />
 
-      <EuiPageSection paddingSize="l" grow>
+      <EuiPageTemplate.Section>
         <EuiText>123</EuiText>
-      </EuiPageSection>
+      </EuiPageTemplate.Section>
     </>
   );
 }

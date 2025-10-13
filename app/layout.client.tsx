@@ -1,25 +1,7 @@
 "use client";
 
 import { EuiPageTemplate, EuiSideNav } from "@elastic/eui";
-import { useRouter } from "next/navigation";
-
-function useGetLinkProps() {
-  const router = useRouter();
-
-  return (href: string) => ({
-    href,
-    onClick: (e: React.MouseEvent) => {
-      if (e.metaKey || e.ctrlKey) {
-        // Default behavior for opening in a new tab
-        return;
-      }
-
-      e.preventDefault();
-
-      router.push(href);
-    },
-  });
-}
+import { useGetLinkProps } from "./hooks/useGetLinkProps";
 
 export default function LayoutClient({
   children,

@@ -30,7 +30,7 @@ export function EuiProviderWrapper({
 
   return (
     <EuiProvider cache={cache}>
-      <EuiThemeProvider colorMode="dark">
+      <EuiThemeProvider colorMode="light">
         <EuiPage paddingSize="l" style={{ height: "100vh" }}>
           <EuiPageBody>{children}</EuiPageBody>
         </EuiPage>

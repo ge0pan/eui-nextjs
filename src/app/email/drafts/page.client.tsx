@@ -1,8 +1,32 @@
 "use client";
 
-import { EuiPageTemplate, EuiText } from "@elastic/eui";
+import { EuiCodeBlock, EuiPageTemplate } from "@elastic/eui";
+
+import { useEmailsQuery } from "@/services/email/lib/query";
 
 export default function PageClient() {
+  const { data, isPending, error } = useEmailsQuery();
+
+  if (isPending) {
+    return (
+      <EuiPageTemplate.EmptyPrompt
+        iconType="loading"
+        title={<h2>Loading</h2>}
+        body={<p>Fetching data...</p>}
+      />
+    );
+  }
+
+  if (error) {
+    return (
+      <EuiPageTemplate.EmptyPrompt
+        iconType="alert"
+        title={<h2>Something went wrong</h2>}
+        body={<p>Failed to fetch data</p>}
+      />
+    );
+  }
+
   return (
     <>
       <EuiPageTemplate.Header
@@ -11,7 +35,9 @@ export default function PageClient() {
       />
 
       <EuiPageTemplate.Section>
-        <EuiText>123</EuiText>
+        <EuiCodeBlock language="json">
+          {JSON.stringify(data, null, 2)}
+        </EuiCodeBlock>
       </EuiPageTemplate.Section>
     </>
   );

@@ -1,6 +1,6 @@
 import { EuiProviderWrapper } from "@/components/EuiProvider";
 
-import LayoutClient from "./layout.client";
+import LayoutClient from "./layout.client.dynamic";
 
 export default function RootLayout({
   children,

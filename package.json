@@ -20,7 +20,8 @@
     "nuqs": "^2.7.1",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.65.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

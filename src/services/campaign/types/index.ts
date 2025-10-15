@@ -12,3 +12,12 @@ export type Campaign = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type CampaignCreateInput = {
+  name: string;
+  description: string;
+  status: string;
+  geo: string;
+  area: string;
+  language: string;
+};

@@ -1,3 +1,5 @@
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 import EuiProviderWrapper from "@/components/EuiProvider";
 import QueryClientWrapper from "@/components/QueryClientProvider";
 
@@ -11,11 +13,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <QueryClientWrapper>
-          <EuiProviderWrapper>
-            <LayoutClient>{children}</LayoutClient>
-          </EuiProviderWrapper>
-        </QueryClientWrapper>
+        <NuqsAdapter>
+          <QueryClientWrapper>
+            <EuiProviderWrapper>
+              <LayoutClient>{children}</LayoutClient>
+            </EuiProviderWrapper>
+          </QueryClientWrapper>
+        </NuqsAdapter>
       </body>
     </html>
   );

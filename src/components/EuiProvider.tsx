@@ -5,7 +5,7 @@ import { useServerInsertedHTML } from "next/navigation";
 import { EuiProvider, EuiThemeProvider } from "@elastic/eui";
 import createCache from "@emotion/cache";
 
-export function EuiProviderWrapper({
+export default function EuiProviderWrapper({
   children,
 }: {
   children: React.ReactNode;

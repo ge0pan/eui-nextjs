@@ -1,4 +1,5 @@
-import { EuiProviderWrapper } from "@/components/EuiProvider";
+import EuiProviderWrapper from "@/components/EuiProvider";
+import QueryClientWrapper from "@/components/QueryClientProvider";
 
 import LayoutClient from "./layout.client.dynamic";
 
@@ -10,9 +11,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <EuiProviderWrapper>
-          <LayoutClient>{children}</LayoutClient>
-        </EuiProviderWrapper>
+        <QueryClientWrapper>
+          <EuiProviderWrapper>
+            <LayoutClient>{children}</LayoutClient>
+          </EuiProviderWrapper>
+        </QueryClientWrapper>
       </body>
     </html>
   );

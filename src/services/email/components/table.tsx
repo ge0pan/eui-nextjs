@@ -23,7 +23,12 @@ const columns: EuiBasicTableColumn<Email>[] = [
   {
     field: "type",
     name: "Type",
-    width: "20rem",
+    width: "15rem",
+  },
+  {
+    field: "campaign.geo",
+    name: "Geo",
+    width: "15rem",
   },
   {
     field: "sendDate",

@@ -4,6 +4,8 @@ export const subCampaignTypeOptionsMap = {
   General: ["All"],
 };
 
+export const statusOptions = ["Active", "Inactive"];
+
 export const geoOptions: string[] = ["AMER", "EMEA", "Other"];
 
 export const filteredAreaOptions = {

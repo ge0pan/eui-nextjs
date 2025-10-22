@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import {
@@ -10,12 +10,14 @@ import {
   EuiFormRow,
   EuiPageTemplate,
   EuiSelect,
+  EuiSwitch,
   EuiTextArea,
 } from "@elastic/eui";
 
 import {
   campaignTypeOptions,
   geoOptions,
+  statusOptions,
   subCampaignTypeOptionsMap,
   updateFilteredAreaOptions,
 } from "@/services/campaign/lib/options";
@@ -29,7 +31,7 @@ export default function PageClient() {
       defaultValues: {
         name: "",
         description: "",
-        status: "",
+        status: "Active",
         geo: "",
         area: "",
         language: "",
@@ -66,6 +68,34 @@ export default function PageClient() {
 
     updateFilteredAreaOptions(geo, setFilteredAreaOptions);
   }, [geo, isSubmitting]);
+
+  const urlToOptionsMap = useMemo(
+    (): {
+      [key: string]: {
+        fieldName: string;
+        isTextInput?: boolean;
+        options?: string[];
+      };
+    } => ({
+      name: {
+        fieldName: "name",
+        isTextInput: true,
+      },
+      status: {
+        fieldName: "status",
+        options: statusOptions,
+      },
+      geo: {
+        fieldName: "geo",
+        options: geoOptions,
+      },
+      area: {
+        fieldName: "area",
+        options: filteredAreaOptions,
+      },
+    }),
+    [filteredAreaOptions],
+  );
 
   const onSubmit: SubmitHandler<CampaignCreateInput> = useCallback((data) => {
     setIsSubmitting(true);
@@ -152,6 +182,28 @@ export default function PageClient() {
                       text,
                     })),
                   ]}
+                  {...rest}
+                />
+              </EuiFormRow>
+            )}
+          />
+
+          <Controller
+            name="status"
+            control={control}
+            render={({
+              field: { name, ref, value, ...rest },
+              fieldState: { invalid, error },
+            }) => (
+              <EuiFormRow
+                label={name}
+                error={error?.message}
+                isInvalid={invalid}
+              >
+                <EuiSwitch
+                  showLabel={false}
+                  label={name}
+                  checked={value === "Active"}
                   {...rest}
                 />
               </EuiFormRow>

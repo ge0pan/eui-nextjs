@@ -16,6 +16,8 @@ export type Campaign = {
 export type CampaignCreateInput = {
   name: string;
   description: string;
+  type: string;
+  subtype: string;
   status: string;
   geo: string;
   area: string;

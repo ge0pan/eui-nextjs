@@ -10,6 +10,7 @@ import {
   EuiFormRow,
   EuiPageTemplate,
   EuiSelect,
+  EuiTextArea,
 } from "@elastic/eui";
 
 import {
@@ -36,16 +37,12 @@ export default function PageClient() {
     });
 
   const campaignType = watch("type");
-  const subCampaignType = watch("subtype");
   const geo = watch("geo");
-  const area = watch("area");
 
   const [subCampaignTypeOptions, setSubCampaignTypeOptions] = useState<
     string[]
   >([]);
   const [filteredAreaOptions, setFilteredAreaOptions] = useState<string[]>([]);
-
-  console.log("filteredAreaOptions", filteredAreaOptions);
 
   // Field Dependencies
   useEffect(() => {
@@ -135,6 +132,33 @@ export default function PageClient() {
           />
 
           <Controller
+            name="subtype"
+            control={control}
+            rules={{ required: "This field is required" }}
+            render={({
+              field: { name, ref, ...rest },
+              fieldState: { invalid, error },
+            }) => (
+              <EuiFormRow
+                label={name}
+                error={error?.message}
+                isInvalid={invalid}
+              >
+                <EuiSelect
+                  isInvalid={invalid}
+                  options={[
+                    { value: "", text: "Select..." },
+                    ...subCampaignTypeOptions.map((text) => ({
+                      text,
+                    })),
+                  ]}
+                  {...rest}
+                />
+              </EuiFormRow>
+            )}
+          />
+
+          <Controller
             name="description"
             control={control}
             rules={{ required: "This field is required" }}
@@ -147,7 +171,7 @@ export default function PageClient() {
                 error={error?.message}
                 isInvalid={invalid}
               >
-                <EuiFieldText isInvalid={invalid} inputRef={ref} {...rest} />
+                <EuiTextArea isInvalid={invalid} inputRef={ref} {...rest} />
               </EuiFormRow>
             )}
           />
@@ -170,6 +194,33 @@ export default function PageClient() {
                   options={[
                     { value: "", text: "Select..." },
                     ...geoOptions.map((text) => ({
+                      text,
+                    })),
+                  ]}
+                  {...rest}
+                />
+              </EuiFormRow>
+            )}
+          />
+
+          <Controller
+            name="area"
+            control={control}
+            rules={{ required: "This field is required" }}
+            render={({
+              field: { name, ref, ...rest },
+              fieldState: { invalid, error },
+            }) => (
+              <EuiFormRow
+                label={name}
+                error={error?.message}
+                isInvalid={invalid}
+              >
+                <EuiSelect
+                  isInvalid={invalid}
+                  options={[
+                    { value: "", text: "Select..." },
+                    ...filteredAreaOptions.map((text) => ({
                       text,
                     })),
                   ]}

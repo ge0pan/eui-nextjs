@@ -20,6 +20,8 @@ const subCampaignTypeOptionsMap = {
 export default function PageClient() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  console.log("isSubmitting", isSubmitting);
+
   const [subCampaignTypeOptions, setSubCampaignTypeOptions] = useState<
     string[]
   >([]);
@@ -27,22 +29,17 @@ export default function PageClient() {
     string[]
   >([]);
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    watch,
-    resetField,
-  } = useForm<CampaignCreateInput>({
-    defaultValues: {
-      name: "",
-      description: "",
-      status: "",
-      geo: "",
-      area: "",
-      language: "",
-    },
-  });
+  const { handleSubmit, control, watch, resetField } =
+    useForm<CampaignCreateInput>({
+      defaultValues: {
+        name: "",
+        description: "",
+        status: "",
+        geo: "",
+        area: "",
+        language: "",
+      },
+    });
 
   const campaignType = watch("type");
   const subCampaignType = watch("subtype");
@@ -93,8 +90,15 @@ export default function PageClient() {
           <Controller
             name="name"
             control={control}
-            render={({ field: { name, ref, ...rest } }) => (
-              <EuiFormRow label={name}>
+            render={({
+              field: { name, ref, ...rest },
+              fieldState: { invalid, error },
+            }) => (
+              <EuiFormRow
+                label={name}
+                error={error?.message}
+                isInvalid={invalid}
+              >
                 <EuiFieldText inputRef={ref} {...rest} />
               </EuiFormRow>
             )}
@@ -104,11 +108,14 @@ export default function PageClient() {
             name="description"
             control={control}
             rules={{ required: "This field is required" }}
-            render={({ field: { name, ref, ...rest } }) => (
+            render={({
+              field: { name, ref, ...rest },
+              fieldState: { invalid, error },
+            }) => (
               <EuiFormRow
                 label={name}
-                error={errors[name]?.message}
-                isInvalid={!!errors[name]}
+                error={error?.message}
+                isInvalid={invalid}
               >
                 <EuiFieldText inputRef={ref} {...rest} />
               </EuiFormRow>

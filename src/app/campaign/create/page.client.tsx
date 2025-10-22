@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
@@ -13,6 +14,7 @@ import {
   EuiSwitch,
   EuiTextArea,
 } from "@elastic/eui";
+import { is } from "@elastic/eui/src/utils/prop_types/is";
 
 import {
   campaignTypeOptions,
@@ -24,9 +26,11 @@ import {
 import { CampaignCreateInput } from "@/services/campaign/types";
 
 export default function PageClient() {
+  const searchParams = useSearchParams();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { handleSubmit, control, watch, resetField } =
+  const { handleSubmit, control, watch, resetField, setValue, trigger } =
     useForm<CampaignCreateInput>({
       defaultValues: {
         name: "",
@@ -69,6 +73,7 @@ export default function PageClient() {
     updateFilteredAreaOptions(geo, setFilteredAreaOptions);
   }, [geo, isSubmitting]);
 
+  // URL Parsing
   const urlToOptionsMap = useMemo(
     (): {
       [key: string]: {
@@ -80,6 +85,14 @@ export default function PageClient() {
       name: {
         fieldName: "name",
         isTextInput: true,
+      },
+      type: {
+        fieldName: "type",
+        options: campaignTypeOptions,
+      },
+      subtype: {
+        fieldName: "subtype",
+        options: subCampaignTypeOptions,
       },
       status: {
         fieldName: "status",
@@ -94,8 +107,45 @@ export default function PageClient() {
         options: filteredAreaOptions,
       },
     }),
-    [filteredAreaOptions],
+    [subCampaignTypeOptions, filteredAreaOptions],
   );
+
+  useEffect(() => {
+    if (isSubmitting) return;
+    if (!searchParams) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    const updates: { [key: string]: any } = {};
+
+    Object.entries(urlToOptionsMap).forEach(([key, fieldMapping]) => {
+      const fieldValue = params.get(key);
+      if (fieldValue) {
+        const decodedValue = decodeURIComponent(fieldValue);
+        const values = decodedValue
+          .split(",")
+          .map((v) => v.trim().toLowerCase());
+
+        if (fieldMapping.isTextInput) {
+          updates[fieldMapping.fieldName] = decodedValue;
+        } else if (Array.isArray(fieldMapping.options)) {
+          const matchedOption = fieldMapping.options.find((option) =>
+            values.includes(decodeURIComponent(option.toLowerCase())),
+          );
+          if (matchedOption) {
+            updates[fieldMapping.fieldName] = matchedOption;
+          }
+        }
+      }
+
+      Object.entries(updates).forEach(([field, value]) => {
+        setValue(field as keyof CampaignCreateInput, value, {
+          shouldValidate: false,
+        });
+      });
+
+      trigger();
+    });
+  }, [isSubmitting, searchParams, setValue, trigger]);
 
   const onSubmit: SubmitHandler<CampaignCreateInput> = useCallback((data) => {
     setIsSubmitting(true);

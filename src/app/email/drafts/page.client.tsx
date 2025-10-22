@@ -1,6 +1,13 @@
 "use client";
 
-import { EuiCodeBlock, EuiLoadingSpinner, EuiPageTemplate } from "@elastic/eui";
+import {
+  EuiButton,
+  EuiCard,
+  EuiFlexGrid,
+  EuiFlexItem,
+  EuiLoadingSpinner,
+  EuiPageTemplate,
+} from "@elastic/eui";
 
 import { useEmailsQuery } from "@/services/email/lib/query";
 
@@ -34,9 +41,21 @@ export default function PageClient() {
       />
 
       <EuiPageTemplate.Section>
-        <EuiCodeBlock language="json">
-          {JSON.stringify(data, null, 2)}
-        </EuiCodeBlock>
+        <EuiFlexGrid columns={2}>
+          {data.map((email) => (
+            <EuiFlexItem key={email.id}>
+              <EuiCard
+                title={`${email.name} (Draft)`}
+                description={email.type}
+                footer={
+                  <EuiButton iconType="arrowRight" href="#">
+                    View
+                  </EuiButton>
+                }
+              />
+            </EuiFlexItem>
+          ))}
+        </EuiFlexGrid>
       </EuiPageTemplate.Section>
     </>
   );

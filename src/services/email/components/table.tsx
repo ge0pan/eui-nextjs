@@ -1,6 +1,6 @@
 import React from "react";
 
-import { EuiBasicTable, EuiBasicTableColumn } from "@elastic/eui";
+import { EuiBasicTable, EuiBasicTableColumn, EuiCode } from "@elastic/eui";
 
 import { Email } from "@/services/email/types";
 
@@ -13,7 +13,8 @@ const columns: EuiBasicTableColumn<Email>[] = [
     field: "id",
     name: "ID",
     truncateText: true,
-    width: "3rem",
+    width: "7rem",
+    render: (_, email) => <EuiCode>{email.id}</EuiCode>,
   },
   {
     field: "name",

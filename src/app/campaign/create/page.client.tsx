@@ -11,10 +11,10 @@ import {
   EuiFormRow,
   EuiPageTemplate,
   EuiSelect,
+  EuiSpacer,
   EuiSwitch,
   EuiTextArea,
 } from "@elastic/eui";
-import { is } from "@elastic/eui/src/utils/prop_types/is";
 
 import {
   campaignTypeOptions,
@@ -107,7 +107,7 @@ export default function PageClient() {
         options: filteredAreaOptions,
       },
     }),
-    [subCampaignTypeOptions, filteredAreaOptions],
+    [],
   );
 
   useEffect(() => {
@@ -136,15 +136,15 @@ export default function PageClient() {
           }
         }
       }
-
-      Object.entries(updates).forEach(([field, value]) => {
-        setValue(field as keyof CampaignCreateInput, value, {
-          shouldValidate: false,
-        });
-      });
-
-      trigger();
     });
+
+    Object.entries(updates).forEach(([field, value]) => {
+      setValue(field as keyof CampaignCreateInput, value, {
+        shouldValidate: true,
+      });
+    });
+
+    trigger();
   }, [isSubmitting, searchParams, setValue, trigger]);
 
   const onSubmit: SubmitHandler<CampaignCreateInput> = useCallback((data) => {
@@ -166,6 +166,24 @@ export default function PageClient() {
       />
 
       <EuiPageTemplate.Section>
+        <EuiButton
+          size="s"
+          color="accent"
+          onClick={() => {
+            setValue("name", "My New Campaign");
+            setValue("type", "General");
+            setValue("subtype", "All");
+            setValue("status", "Active");
+            setValue("description", "My New Campaign for the new season");
+            setValue("geo", "AMER");
+            setValue("area", "US");
+          }}
+        >
+          Auto-Fill
+        </EuiButton>
+
+        <EuiSpacer size="m" />
+
         <EuiForm component="form" onSubmit={handleSubmit(onSubmit)}>
           <Controller
             name="name"

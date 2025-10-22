@@ -12,12 +12,13 @@ import {
   EuiSelect,
 } from "@elastic/eui";
 
+import {
+  campaignTypeOptions,
+  geoOptions,
+  subCampaignTypeOptionsMap,
+  updateFilteredAreaOptions,
+} from "@/services/campaign/lib/options";
 import { CampaignCreateInput } from "@/services/campaign/types";
-
-const campaignTypeOptions = ["General", "Promotion"];
-const subCampaignTypeOptionsMap = {
-  General: ["All"],
-};
 
 export default function PageClient() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,9 +43,9 @@ export default function PageClient() {
   const [subCampaignTypeOptions, setSubCampaignTypeOptions] = useState<
     string[]
   >([]);
-  const [filteredDeliveryOptions, setFilteredDeliveryOptions] = useState<
-    string[]
-  >([]);
+  const [filteredAreaOptions, setFilteredAreaOptions] = useState<string[]>([]);
+
+  console.log("filteredAreaOptions", filteredAreaOptions);
 
   // Field Dependencies
   useEffect(() => {
@@ -63,11 +64,11 @@ export default function PageClient() {
     }
   }, [isSubmitting, campaignType, resetField]);
 
-  // useEffect(() => {
-  //   if (isSubmitting) return;
+  useEffect(() => {
+    if (isSubmitting) return;
 
-  //   updateFilteredAreaOptions(selectedGeo, setFilteredAreaOptions);
-  // }, [selectedGeo, isSubmitting]);
+    updateFilteredAreaOptions(geo, setFilteredAreaOptions);
+  }, [geo, isSubmitting]);
 
   const onSubmit: SubmitHandler<CampaignCreateInput> = useCallback((data) => {
     setIsSubmitting(true);
@@ -147,6 +148,33 @@ export default function PageClient() {
                 isInvalid={invalid}
               >
                 <EuiFieldText isInvalid={invalid} inputRef={ref} {...rest} />
+              </EuiFormRow>
+            )}
+          />
+
+          <Controller
+            name="geo"
+            control={control}
+            rules={{ required: "This field is required" }}
+            render={({
+              field: { name, ref, ...rest },
+              fieldState: { invalid, error },
+            }) => (
+              <EuiFormRow
+                label={name}
+                error={error?.message}
+                isInvalid={invalid}
+              >
+                <EuiSelect
+                  isInvalid={invalid}
+                  options={[
+                    { value: "", text: "Select..." },
+                    ...geoOptions.map((text) => ({
+                      text,
+                    })),
+                  ]}
+                  {...rest}
+                />
               </EuiFormRow>
             )}
           />

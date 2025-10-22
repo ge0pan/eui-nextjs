@@ -38,7 +38,6 @@ export default function PageClient() {
         status: "Active",
         geo: "",
         area: "",
-        language: "",
       },
     });
 

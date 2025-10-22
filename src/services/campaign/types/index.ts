@@ -7,7 +7,6 @@ export type Campaign = {
   status: string;
   geo: string;
   area: string;
-  language: string;
   owner: User;
   createdAt: Date;
   updatedAt: Date;
@@ -21,5 +20,4 @@ export type CampaignCreateInput = {
   status: string;
   geo: string;
   area: string;
-  language: string;
 };

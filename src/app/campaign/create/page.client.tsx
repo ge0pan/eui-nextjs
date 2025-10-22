@@ -101,7 +101,7 @@ export default function PageClient() {
                 error={error?.message}
                 isInvalid={invalid}
               >
-                <EuiFieldText inputRef={ref} {...rest} />
+                <EuiFieldText isInvalid={invalid} inputRef={ref} {...rest} />
               </EuiFormRow>
             )}
           />
@@ -109,6 +109,7 @@ export default function PageClient() {
           <Controller
             name="type"
             control={control}
+            rules={{ required: "This field is required" }}
             render={({
               field: { name, ref, ...rest },
               fieldState: { invalid, error },
@@ -119,6 +120,7 @@ export default function PageClient() {
                 isInvalid={invalid}
               >
                 <EuiSelect
+                  isInvalid={invalid}
                   options={[
                     { value: "", text: "Select..." },
                     ...campaignTypeOptions.map((text) => ({
@@ -144,7 +146,7 @@ export default function PageClient() {
                 error={error?.message}
                 isInvalid={invalid}
               >
-                <EuiFieldText inputRef={ref} {...rest} />
+                <EuiFieldText isInvalid={invalid} inputRef={ref} {...rest} />
               </EuiFormRow>
             )}
           />

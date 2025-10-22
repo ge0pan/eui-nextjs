@@ -1,6 +1,6 @@
 "use client";
 
-import { EuiCodeBlock, EuiPageTemplate } from "@elastic/eui";
+import { EuiCodeBlock, EuiLoadingSpinner, EuiPageTemplate } from "@elastic/eui";
 
 import { useEmailsQuery } from "@/services/email/lib/query";
 
@@ -10,8 +10,7 @@ export default function PageClient() {
   if (isPending) {
     return (
       <EuiPageTemplate.EmptyPrompt
-        iconType="loading"
-        title={<h2>Loading</h2>}
+        title={<EuiLoadingSpinner size="l" />}
         body={<p>Fetching data...</p>}
       />
     );

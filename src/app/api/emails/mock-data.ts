@@ -2,7 +2,7 @@ import { Email } from "@/services/email/types";
 
 const data: Email[] = [
   {
-    id: "1",
+    id: "a1b2c3",
     name: "New Product Launch",
     type: "Promotional",
     content: {
@@ -44,7 +44,7 @@ const data: Email[] = [
     updatedAt: new Date("2022-02-20T14:30:00.000Z"),
   },
   {
-    id: "2",
+    id: "d4e5f6",
     name: "End of Summer Sale",
     type: "Promotional",
     content: {
@@ -86,7 +86,7 @@ const data: Email[] = [
     updatedAt: new Date("2022-03-15T14:30:00.000Z"),
   },
   {
-    id: "3",
+    id: "a7b8c9",
     name: "Black Friday Sale",
     type: "Promotional",
     content: {
@@ -130,3 +130,4 @@ const data: Email[] = [
 ];
 
 export default data;
+

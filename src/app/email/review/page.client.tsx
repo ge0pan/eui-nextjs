@@ -5,11 +5,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   EuiFieldText,
-  EuiIcon,
   EuiInputPopover,
   EuiLoadingSpinner,
   EuiPageTemplate,
   EuiSelectable,
+  EuiSpacer,
 } from "@elastic/eui";
 
 import { EmailTable } from "@/services/email/components/table";
@@ -150,8 +150,6 @@ export default function PageClient() {
       />
 
       <EuiPageTemplate.Section>
-        <EmailTable emails={filteredEmails} />
-
         <EuiSelectable
           options={allPrincipals.map((p) => ({
             label: p,
@@ -167,7 +165,6 @@ export default function PageClient() {
         >
           {(list) => (
             <EuiInputPopover
-              fullWidth
               closePopover={() => setIsPrincipalFilterPopoverOpen(false)}
               disableFocusTrap
               closeOnScroll
@@ -175,10 +172,9 @@ export default function PageClient() {
               input={
                 <EuiFieldText
                   readOnly
-                  fullWidth
                   value={getValuePrincipal(principalFilter, allPrincipals)}
                   onClick={() => setIsPrincipalFilterPopoverOpen(true)}
-                  prepend={<EuiIcon type="users" />}
+                  prepend={"Filter by Principal"}
                 />
               }
               panelPaddingSize="none"
@@ -187,6 +183,10 @@ export default function PageClient() {
             </EuiInputPopover>
           )}
         </EuiSelectable>
+
+        <EuiSpacer size="m" />
+
+        <EmailTable emails={filteredEmails} />
       </EuiPageTemplate.Section>
     </>
   );

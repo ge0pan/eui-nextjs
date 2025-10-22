@@ -7,6 +7,7 @@ export type Email = {
   type: string;
   content: Record<string, string>;
   campaign: Campaign;
+  targeting: string; // JSON
   sendDate: Date;
   owner: User;
   createdAt: Date;

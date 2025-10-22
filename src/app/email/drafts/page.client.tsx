@@ -46,7 +46,7 @@ export default function PageClient() {
             <EuiFlexItem key={email.id}>
               <EuiCard
                 title={`${email.name} (Draft)`}
-                description={email.type}
+                description={`${email.type} by ${email.owner.name}`}
                 footer={
                   <EuiButton iconType="arrowRight" href="#">
                     View

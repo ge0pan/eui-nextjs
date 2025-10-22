@@ -1,16 +1,34 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { EuiLoadingSpinner, EuiPageTemplate } from "@elastic/eui";
+import {
+  EuiFieldText,
+  EuiIcon,
+  EuiInputPopover,
+  EuiLoadingSpinner,
+  EuiPageTemplate,
+  EuiSelectable,
+} from "@elastic/eui";
 
 import { EmailTable } from "@/services/email/components/table";
 import { Email } from "@/services/email/types";
 
+// TODO: remove after upgrading to TS5.5
+function intersection(a: Set<string>, b: Set<string>) {
+  return new Set([...a].filter((i) => b.has(i)));
+}
+
+const getValuePrincipal = (selected: string[], all: string[]) => {
+  if (selected.length === 0 || selected.length === all.length)
+    return "All Audiences";
+  return selected.join(" & ");
+};
+
 export default function PageClient() {
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [emails, setEmails] = useState<Email[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,6 +41,19 @@ export default function PageClient() {
   const principalFilterParam = (searchParams?.get("principal") || "").trim();
   const [principalFilter, setPrincipalFilterState] = useState<string[]>(
     principalFilterParam ? principalFilterParam.split(",") : [],
+  );
+  const setPrincipalFilter = useCallback(
+    (value: string[]) => {
+      const nextSearchParams = new URLSearchParams(searchParams || undefined);
+      if (value.length === 0 || value.length === allPrincipals.length) {
+        nextSearchParams.delete("principal");
+      } else {
+        nextSearchParams.set("principal", value.toString());
+      }
+      router.replace(`?${nextSearchParams}`);
+      setPrincipalFilterState(value);
+    },
+    [searchParams, router, allPrincipals],
   );
 
   useEffect(() => {
@@ -73,6 +104,25 @@ export default function PageClient() {
     fetchEmails();
   }, []);
 
+  const filteredEmails = useMemo(
+    () =>
+      emails.filter(({ targeting }) => {
+        const audienceTargeting = JSON.parse(targeting) as {
+          principals?: string[];
+        };
+
+        const principals = audienceTargeting.principals || [];
+
+        const matchesPrincipal =
+          allPrincipals.length === 0 ||
+          principalFilter.length === 0 ||
+          intersection(new Set(principalFilter), new Set(principals)).size > 0;
+
+        return matchesPrincipal;
+      }),
+    [emails, principalFilter, allPrincipals],
+  );
+
   if (loading) {
     return (
       <EuiPageTemplate.EmptyPrompt
@@ -100,7 +150,43 @@ export default function PageClient() {
       />
 
       <EuiPageTemplate.Section>
-        <EmailTable emails={emails} />
+        <EmailTable emails={filteredEmails} />
+
+        <EuiSelectable
+          options={allPrincipals.map((p) => ({
+            label: p,
+            checked: principalFilter.includes(p) ? "on" : undefined,
+          }))}
+          listProps={{ bordered: true }}
+          onChange={(options) => {
+            const selected = options
+              .filter((o) => o.checked === "on")
+              .map((o) => o.label);
+            setPrincipalFilter(selected);
+          }}
+        >
+          {(list) => (
+            <EuiInputPopover
+              fullWidth
+              closePopover={() => setIsPrincipalFilterPopoverOpen(false)}
+              disableFocusTrap
+              closeOnScroll
+              isOpen={isPrincipalFilterPopoverOpen}
+              input={
+                <EuiFieldText
+                  readOnly
+                  fullWidth
+                  value={getValuePrincipal(principalFilter, allPrincipals)}
+                  onClick={() => setIsPrincipalFilterPopoverOpen(true)}
+                  prepend={<EuiIcon type="users" />}
+                />
+              }
+              panelPaddingSize="none"
+            >
+              {list}
+            </EuiInputPopover>
+          )}
+        </EuiSelectable>
       </EuiPageTemplate.Section>
     </>
   );
